@@ -20,7 +20,12 @@ const models={
         'money':{type:String}           //薪资待遇
     },
     chat:{
-
+        'chatid':{'type':String,'require':true},//会话唯一标示
+        'from':{'type':String,'require':true},//发送端
+        'to':{'type':String,'require':true},//接受端
+        'read':{'type':Boolean,'default':false},//消息是否阅读
+        'content':{'type':String,'require':true,'default':''},//消息内容
+        'create_time':{'type':Number,'default':Date.now}//时间戳
     }
 
 }

@@ -4,13 +4,14 @@ import {createStore,applyMiddleware,compose} from 'redux'
 import thunk from 'redux-thunk'
 import reducer from './reducers'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
-import {Provider,connect} from 'react-redux'
+import {Provider} from 'react-redux'
 import './config'//请求统一拦截器
 import Login from './container/login/login'
 import Bossinfo from './container/bossinfo/bossinfo'
 import Geniusinfo from './container/geniusinfo/geniusinfo'
 import Register from './container/register/register'
-import Authroute from './component/authroute/authroute' 
+import Authroute from './component/authroute/authroute'
+import Chat from './component/chat/chat'  
 import Dashboard from './component/dashboard/dashboard'
 import './index.css'
 const store=createStore(reducer,compose(applyMiddleware(thunk)
@@ -29,6 +30,7 @@ ReactDOM.render(
                     <Route path='/geniusinfo'   component={Geniusinfo}></Route>
                     <Route path='/login'   component={Login}></Route>
                     <Route path='/register' component={Register}></Route>
+                    <Route path='/chat/:user' component={Chat}></Route>
                     <Route    component={Dashboard}></Route>
                  </Switch>     
                  

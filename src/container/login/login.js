@@ -4,35 +4,92 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {login} from '../../redux/user.redux'
 import {List,InputItem,WingBlank,WhiteSpace,Button} from 'antd-mobile'
+import imoocForm from '../../component/imooc-form/imooc-form'
+// function hello(){
+//     console.log('hello imooc i love react')
+// }
+// function wapperhello(fn){
+//     return function(){
+//         console.log('before say hello');
+//         fn();
+//         console.log('after say hello')
+//     }
+// }
+// hello=wapperhello(hello);
+// hello();
+// 高阶组件 属性代理／反向继承
+// function WapperHello(Comp){
+//     class WrapHello extends Comp{
+//         componentDidMount(){
+//             console.log('高阶组件新增的生命周期，加载完成')
+//         }
+//         render(){
+//           return(
+//             <div>
+//             <p>这是HOC高阶组件特有的元素</p>
+//             <Comp {...this.props}></Comp>
+//         </div>
+//           )
+                
+            
+//         }
 
+//     }
+    // class WrapHello extends React.Component{
+    //     render(){
+    //       return(
+    //         <div>
+    //         <p>这是HOC高阶组件特有的元素</p>
+    //         <Comp {...this.props}></Comp>
+    //     </div>
+    //       )
+                
+            
+    //     }
+
+    // }
+//     return WrapHello;
+// }
+// @WapperHello 
+// class Hello extends React.Component{
+//     render(){
+//         return <h2>hello i love react</h2>
+//     }
+// }
+
+// Hello=WapperHello(Hello);
 
 @connect(state=>state.user,{login})
+@imoocForm
 class Login extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-            user:'',
-            pwd:'',
-        }
+        // this.state={
+        //     user:'',
+        //     pwd:'',
+        // }
         this.register=this.register.bind(this);
         this.hanleLogin=this.hanleLogin.bind(this)
     }
+    //  handleChange(key,val){
+    //     this.setState({
+    //         [key]:val
+    //     })
+    // }
+    
     register(){
         // return <Redirect to='/register'></Redirect>
         this.props.history.push('/register')
     }
     hanleLogin(){
-        this.props.login(this.state);
+        this.props.login(this.props.state);
     }
-    handleChange(key,val){
-        this.setState({
-            [key]:val
-        })
-    }
+//    this.props.handleChange,this.props.state都是imoocForm中获取的数据
     render(){
         return (
             <div>
-                {this.props.redirectTo?<Redirect to={this.props.redirectTo}></Redirect>:null}
+                {this.props.redirectTo && this.props.redirectTo!='/login' ?<Redirect to={this.props.redirectTo}></Redirect>:null}
+               {/* <Hello />  */}
               <Logo ></Logo >  
               <h2>登录页</h2>
               <WingBlank>
@@ -41,11 +98,11 @@ class Login extends React.Component{
                             :null}
                   <List>
                       <InputItem
-                         onChange={v=>this.handleChange('user',v)}
+                         onChange={v=>this.props.handleChange('user',v)}
                       >用户</InputItem>
                       <WhiteSpace />
                       <InputItem
-                         onChange={v=>this.handleChange('pwd',v)}
+                         onChange={v=>this.props.handleChange('pwd',v)}
                          type='password'
                       >密码</InputItem>
                   </List>

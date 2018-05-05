@@ -4,6 +4,7 @@ const Router=express.Router();
 const model=require('./model');
 const utils=require('utility');//加密插件
 const User=model.getModel('user')
+const Chat=model.getModel('chat')
 const _filter={'pwd':0,'_v':0}
 // psot方法使用body来获取值，而get方法使用query来获取请求参数
 Router.get('/list',function(req,res){
@@ -13,7 +14,24 @@ Router.get('/list',function(req,res){
         return res.json({code:0,data:doc})
    })
 })
-
+Router.get('/getmsglist',function(req,res){
+    const user=req.cookies.userid
+    User.find({},function(e,userdoc){
+        let users={}
+        userdoc.forEach(v=>{
+            users[v.id]={name:v.user,avatar:v.avatar}
+        })
+    
+        // Chat.remove({},function(e,d){});//清楚chat聊天数据
+        // {'$or':[from:user,to:user]}
+        Chat.find({'$or':[{from:user},{to:user}]},function(err,doc){
+            if(!err){
+                return res.json({code:0,msgs:doc,user:users})
+            }
+        })
+    })
+    
+})
 Router.get('/info',function(req,res){
     // 用户有没有cookie
     const {userid}=req.cookies;
@@ -29,6 +47,23 @@ Router.get('/info',function(req,res){
         }
     })
    
+})
+// 当前用户读取对方发来的信息
+Router.post('/readmsg',function(req,res){
+    const userid= req.cookies.userid;
+    const {from}=req.body;
+    Chat.update(
+        {from,to:userid},
+        {'$set':{read:true}},
+        {'multi':true},
+        function(err,doc){
+            console.log(doc);
+            // { n: 1, nModified: 1, ok: 1 } n:数据量 nModified：修改的数据 ok：修改是否成功
+            if(!err){
+                return res.json({code:0,num:doc.nModified})
+            }
+            return res.json({code:1,msg:'修改失败'})
+    })
 })
 // 解析post过来的参数，进行判断处理。创建成功后返回给前端
 Router.post('/register',function(req,res){

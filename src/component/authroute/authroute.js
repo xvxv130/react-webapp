@@ -16,10 +16,9 @@ class Authroute extends React.Component{
             return null;
         }
 
-        axios.get('user/info').
-            then(res=>{
+        axios.get('/user/info').then(res=>{
                 if(res.status=='200'){
-                    console.log(res.data.code);
+                    // console.log(res.data.code);
                     if(res.data.code==0){
                         //有登录信息
                         this.props.loaddate(res.data.data)
@@ -27,7 +26,7 @@ class Authroute extends React.Component{
                        
                         this.props.history.push('/login')
                     }
-                    console.log(res.data);
+                    // console.log(res.data);
                 }
             })
         

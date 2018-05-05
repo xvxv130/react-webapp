@@ -13,6 +13,7 @@ const initState={
     redirectTo:'',
     _id:''
 }
+const LOGOUT='LOGOUT';
 // reducer
 export function user(state=initState,action){
     switch(action.type){
@@ -26,14 +27,15 @@ export function user(state=initState,action){
         //             return{...state,msg:'',
         //             redirectTo:getRedirectPath(action.payload),isAuth:true,...action.payload}
         case LOAD_DATA:
-                    console.log(action);
-                    return{...state,...action.payload}                         
+                    // console.log(action);
+                    return{...state,...action.payload}
+        case LOGOUT:
+             return {...initState,redirectTo:'/login'}                                     
         case ERROR_MAG:
             return{...state,msg:action.msg,isAuth:false}
         default:
             return state
     }
-    return state;
 }
 
 // acrion-creater
@@ -60,7 +62,7 @@ function errorMsg(msg){
 //     }
 // }
 export function loaddate(data){
-    console.log(data);
+    // console.log(data);
     return {
         type:LOAD_DATA,
         payload:data  
@@ -106,6 +108,10 @@ export function update(data){
     
 }
 
+//清除redux信息
+export function logoutSubmit(){
+    return {type:LOGOUT}
+}
 
 export function login({user,pwd}){
     if(!user||!pwd){
